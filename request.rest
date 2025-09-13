@@ -1,0 +1,23 @@
+### Create Admin
+POST http://localhost:3000/api/v1/auth/create
+Content-Type: application/json
+
+{
+  "username": "adminbaru",
+  "password": "password123",
+  "email": "adminbaru@email.com",
+  "name": "Admin Baru"
+}
+
+### Update Admin
+PUT http://localhost:3000/api/v1/auth/1
+Content-Type: application/json
+
+{
+  "username": "adminupdate",
+  "email": "adminupdate@email.com",
+  "name": "Admin Update"
+}
+
+### Delete Admin
+DELETE http://localhost:3000/api/v1/auth/1
