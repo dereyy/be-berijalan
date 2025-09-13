@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { CCreateAdmin, CUpdateAdmin, CDeleteAdmin } from "../controllers/admin.controller.js";
-import { MValidate, MValidateParams } from "../middlewares/validation.middleware.js";
-import { createAdminSchema, updateAdminSchema, idParamSchema } from "../schemas/auth.schema.js";
+import { CCreateAdmin, CUpdateAdmin, CDeleteAdmin } from "../controllers/admin.controller";
+import { MValidate, MValidateParams } from "../middlewares/validation.middleware";
+import { createAdminSchema, updateAdminSchema, idParamSchema } from "../schemas/auth.schema";
 
 const router = Router();
 

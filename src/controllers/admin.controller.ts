@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import { SCreateAdmin, SUpdateAdmin, SDeleteAdmin } from "../services/admin.service.js";
+import { SCreateAdmin, SUpdateAdmin, SDeleteAdmin } from "../services/admin.service";
 
 export const CCreateAdmin = async (
   req: Request,

@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
-import type { IGlobalResponse } from "../interfaces/global.interface.ts";
-import type { ILoginResponse } from "../interfaces/auth.interface.ts";
-import { UGenerateToken } from "../utils/jwt.util.js";
+import type { IGlobalResponse } from "../interfaces/global.interface";
+import type { ILoginResponse } from "../interfaces/auth.interface";
+import { UGenerateToken } from "../utils/jwt.util";
 
 const prisma = new PrismaClient();
 

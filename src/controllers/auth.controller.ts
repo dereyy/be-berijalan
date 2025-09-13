@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import { SLogin } from "../services/auth.service.js";
+import { SLogin } from "../services/auth.service";
 
 export const CLogin = async (
   req: Request,

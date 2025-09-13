@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
-import type { IGlobalResponse } from "../interfaces/global.interface.js";
+import type { IGlobalResponse } from "../interfaces/global.interface";
 
 const prisma = new PrismaClient();
 

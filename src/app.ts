@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
-import adminRouter from "./routes/admin.router.js";
-import authRouter from "./routes/auth.route.js";
-import { MErrorHandler } from "./middlewares/error.middleware.js";
+import adminRouter from "./routes/admin.router";
+import authRouter from "./routes/auth.route";
+import { MErrorHandler } from "./middlewares/error.middleware";
 
 const app = express();
 

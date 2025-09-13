@@ -1,6 +1,6 @@
 import type { NextFunction } from "express";
 import type { Request, Response } from "express";
-import type { IGlobalResponse } from "../interfaces/global.interface.js";
+import type { IGlobalResponse } from "../interfaces/global.interface";
 
 export const MErrorHandler = (err: any, req: Request, res: Response, next: NextFunction): void => {
   console.error("Error:", err);
