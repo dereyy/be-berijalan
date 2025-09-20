@@ -19,3 +19,11 @@ export const updateQueueStatusSchema = Joi.object({
 export const idParamSchema = Joi.object({
   id: Joi.number().integer().positive().required(),
 });
+
+export const counterIdParamSchema = Joi.object({
+  counter_id: Joi.number().integer().positive().required(),
+});
+
+export const resetQueueSchema = Joi.object({
+  counter_id: Joi.number().integer().positive().optional(),
+});

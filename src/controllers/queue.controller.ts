@@ -6,6 +6,12 @@ import {
   SUpdateQueue,
   SUpdateQueueStatus,
   SDeleteQueue,
+  SClaimQueue,
+  SReleaseQueue,
+  SGetCurrentStatus,
+  SNextQueue,
+  SSkipQueue,
+  SResetQueue,
 } from "../services/queue.service";
 
 // Get all queues
@@ -129,6 +135,126 @@ export const CDeleteQueue = async (
     }
     
     const result = await SDeleteQueue(parseInt(id));
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// =====================
+// NEW QUEUE MANAGEMENT CONTROLLERS
+// =====================
+
+// Claim queue automatically
+export const CClaimQueue = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const result = await SClaimQueue();
+    res.status(201).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Release queue
+export const CReleaseQueue = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    
+    if (!id) {
+      res.status(400).json({
+        status: false,
+        message: "Queue ID is required"
+      });
+      return;
+    }
+    
+    const result = await SReleaseQueue(parseInt(id));
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Get current status of all counters
+export const CGetCurrentStatus = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const result = await SGetCurrentStatus();
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Call next queue for specific counter
+export const CNextQueue = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { counter_id } = req.params;
+    
+    if (!counter_id) {
+      res.status(400).json({
+        status: false,
+        message: "Counter ID is required"
+      });
+      return;
+    }
+    
+    const result = await SNextQueue(parseInt(counter_id));
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Skip current queue and call next
+export const CSkipQueue = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { counter_id } = req.params;
+    
+    if (!counter_id) {
+      res.status(400).json({
+        status: false,
+        message: "Counter ID is required"
+      });
+      return;
+    }
+    
+    const result = await SSkipQueue(parseInt(counter_id));
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Reset queues
+export const CResetQueue = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { counter_id } = req.body;
+    
+    const result = await SResetQueue(counter_id ? parseInt(counter_id) : undefined);
     res.status(200).json(result);
   } catch (error) {
     next(error);

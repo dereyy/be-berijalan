@@ -8,6 +8,7 @@ import {
   CDeleteCounter,
 } from "../controllers/counter.controller";
 import { MValidate, MValidateParams } from "../middlewares/validation.middleware";
+import { MAuthenticate } from "../middlewares/auth.middleware";
 import {
   createCounterSchema,
   updateCounterSchema,
@@ -17,22 +18,24 @@ import {
 
 const counterRouter = Router();
 
+// Public endpoints (tidak perlu authentication)
 // Get all counters
 counterRouter.get("/", CGetAllCounters);
 
 // Get single counter by ID
 counterRouter.get("/:id", MValidateParams(idParamSchema), CGetCounterById);
 
+// Protected endpoints (perlu authentication)
 // Create new counter
-counterRouter.post("/", MValidate(createCounterSchema), CCreateCounter);
+counterRouter.post("/", MAuthenticate, MValidate(createCounterSchema), CCreateCounter);
 
 // Update counter
-counterRouter.put("/:id", MValidateParams(idParamSchema), MValidate(updateCounterSchema), CUpdateCounter);
+counterRouter.put("/:id", MAuthenticate, MValidateParams(idParamSchema), MValidate(updateCounterSchema), CUpdateCounter);
 
 // Update counter status
-counterRouter.patch("/:id/status", MValidateParams(idParamSchema), MValidate(updateCounterStatusSchema), CUpdateCounterStatus);
+counterRouter.patch("/:id/status", MAuthenticate, MValidateParams(idParamSchema), MValidate(updateCounterStatusSchema), CUpdateCounterStatus);
 
 // Delete counter
-counterRouter.delete("/:id", MValidateParams(idParamSchema), CDeleteCounter);
+counterRouter.delete("/:id", MAuthenticate, MValidateParams(idParamSchema), CDeleteCounter);
 
 export default counterRouter;

@@ -1,188 +1,360 @@
+### =================================================================
+### 🏢 BERIJALAN FULLSTACK - QUEUE MANAGEMENT SYSTEM API
+### =================================================================
+### � Date: September 20, 2025
+### 🌐 Base URL: http://localhost:3000/api/v1
+### 📋 Authentication: Bearer JWT Token (untuk endpoint yang dilindungi)
+### =================================================================
+
 ### =========================
-### 🔐 AUTHENTICATION TEST
+### �🔐 AUTHENTICATION SETUP
 ### =========================
 
-### STEP 1: CREATE ADMIN (jika belum ada)
+### 🆕 CREATE ADMIN ACCOUNT (Initial Setup)
 POST http://localhost:3000/api/v1/auth/create
 Content-Type: application/json
 
 {
-  "username": "testadmin",
-  "password": "password123", 
-  "email": "testadmin@email.com",
-  "name": "Test Admin"
+  "username": "admin",
+  "password": "admin123",
+  "email": "admin@berijalan.com",
+  "name": "System Administrator"
 }
 
-### STEP 2: LOGIN TO GET TOKEN ⭐
+### 🔑 LOGIN TO GET JWT TOKEN ⭐ (RUN THIS FIRST!)
 POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "username": "testadmin",
-  "password": "password123"
+  "username": "admin",
+  "password": "admin123"
 }
 
+# 📋 COPY the "token" from response above and replace "YOUR_JWT_TOKEN_HERE" below
+
 ### =========================
-### TESTING ENDPOINTS (dengan & tanpa auth)
-### =========================
-### COUNTER APIs
+### 🛠️ SYSTEM MANAGEMENT
 ### =========================
 
-### COUNTER - GET ALL COUNTERS
+### 📊 GET SYSTEM STATUS
+GET http://localhost:3000/api/v1/system/status
+
+### 🗑️ RESET ALL DATA (FOR TESTING ONLY)
+POST http://localhost:3000/api/v1/system/reset
+
+### =========================
+### 👥 ADMIN MANAGEMENT (🔒 AUTH REQUIRED)
+### =========================
+
+### 📋 GET ALL ADMINS
+GET http://localhost:3000/api/v1/admin
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 👤 GET ADMIN BY ID
+GET http://localhost:3000/api/v1/admin/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### ➕ CREATE NEW ADMIN
+POST http://localhost:3000/api/v1/admin/create
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+{
+  "username": "staff01",
+  "password": "staff123",
+  "email": "staff01@berijalan.com",
+  "name": "Staff Member 01"
+}
+
+### ✏️ UPDATE ADMIN
+PUT http://localhost:3000/api/v1/admin/2
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+{
+  "username": "staff01_updated",
+  "email": "staff01_updated@berijalan.com",
+  "name": "Staff Member 01 Updated"
+}
+
+### 🗑️ DELETE ADMIN
+DELETE http://localhost:3000/api/v1/admin/2
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### =========================
+### 🏪 COUNTER MANAGEMENT
+### =========================
+
+### 📋 GET ALL COUNTERS (Public)
 GET http://localhost:3000/api/v1/counters
 
-### COUNTER - GET SINGLE COUNTER
+### 👁️ GET COUNTER BY ID (Public)
 GET http://localhost:3000/api/v1/counters/1
 
-### COUNTER - CREATE COUNTER
+### ➕ CREATE COUNTER (🔒 AUTH REQUIRED)
 POST http://localhost:3000/api/v1/counters
 Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
 
 {
   "name": "Counter A",
   "maxQueue": 50
 }
 
-### COUNTER - UPDATE COUNTER
-PUT http://localhost:3000/api/v1/counters/1
-Content-Type: application/json
-
-{
-  "name": "Counter A Updated",
-  "maxQueue": 75,
-  "currentQueue": 5
-}
-
-### COUNTER - UPDATE COUNTER STATUS (ACTIVE)
-PATCH http://localhost:3000/api/v1/counters/1/status
-Content-Type: application/json
-
-{
-  "status": "active"
-}
-
-### COUNTER - UPDATE COUNTER STATUS (INACTIVE)
-PATCH http://localhost:3000/api/v1/counters/1/status
-Content-Type: application/json
-
-{
-  "status": "inactive"
-}
-
-### COUNTER - UPDATE COUNTER STATUS (DISABLE)
-PATCH http://localhost:3000/api/v1/counters/1/status
-Content-Type: application/json
-
-{
-  "status": "disable"
-}
-
-### =========================
-### SYSTEM ENDPOINTS (untuk testing)
-### =========================
-
-### 🔄 RESET ALL DATA (jalankan ini dulu untuk clean start)
-POST http://localhost:3000/api/v1/system/reset
-
-### 📊 GET SYSTEM STATUS
-GET http://localhost:3000/api/v1/system/status
-
-### =========================
-### COMPLETE TESTING FLOW
-### =========================
-
-### 🔄 STEP 1: RESET - GET ALL COUNTERS (cek data yang ada)
-GET http://localhost:3000/api/v1/counters
-
-### 🆕 STEP 2: CREATE COUNTER BARU
-POST http://localhost:3000/api/v1/counters
-Content-Type: application/json
-
-{
-  "name": "Counter Fresh",
-  "maxQueue": 50
-}
-
-### 🔐 TEST: CREATE COUNTER DENGAN AUTH (copy token dari login)
+### ➕ CREATE MULTIPLE COUNTERS FOR TESTING
 POST http://localhost:3000/api/v1/counters
 Content-Type: application/json
 Authorization: Bearer YOUR_JWT_TOKEN_HERE
 
 {
-  "name": "Counter With Auth",
-  "maxQueue": 75
+  "name": "Counter B",
+  "maxQueue": 30
 }
 
-### 👁️ STEP 3: GET ALL COUNTERS (lihat ID counter yang baru dibuat)
-GET http://localhost:3000/api/v1/counters
-
-### 👁️ STEP 4: GET SINGLE COUNTER (ganti ID sesuai hasil step 2)
-GET http://localhost:3000/api/v1/counters/3
-
-### ⚙️ STEP 5: UPDATE COUNTER
-PUT http://localhost:3000/api/v1/counters/3
+###
+POST http://localhost:3000/api/v1/counters
 Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
 
 {
-  "name": "Counter Updated",
+  "name": "Counter C",
   "maxQueue": 75
 }
 
-### 🔄 STEP 6: UPDATE COUNTER STATUS - ACTIVE
-PATCH http://localhost:3000/api/v1/counters/3/status
+### ✏️ UPDATE COUNTER (🔒 AUTH REQUIRED)
+PUT http://localhost:3000/api/v1/counters/1
 Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+{
+  "name": "Counter A - Updated",
+  "maxQueue": 60,
+  "currentQueue": 5
+}
+
+### 🔄 UPDATE COUNTER STATUS - ACTIVE (🔒 AUTH REQUIRED)
+PATCH http://localhost:3000/api/v1/counters/1/status
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
 
 {
   "status": "active"
 }
 
-### =========================
-### QUEUE TESTING (gunakan counter ID dari step 2)
-### =========================
-
-### 🆕 STEP 7: CREATE QUEUE
-POST http://localhost:3000/api/v1/queues
+### 🔄 UPDATE COUNTER STATUS - INACTIVE (🔒 AUTH REQUIRED)
+PATCH http://localhost:3000/api/v1/counters/1/status
 Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
 
 {
-  "number": 1,
-  "counterId": 3,
+  "status": "inactive"
+}
+
+### 🔄 UPDATE COUNTER STATUS - DISABLE (🔒 AUTH REQUIRED)
+PATCH http://localhost:3000/api/v1/counters/1/status
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+{
+  "status": "disable"
+}
+
+### 🗑️ DELETE COUNTER (🔒 AUTH REQUIRED)
+DELETE http://localhost:3000/api/v1/counters/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### =========================
+### 🎫 QUEUE MANAGEMENT (NEW FEATURES)
+### =========================
+
+### � GET CURRENT STATUS OF ALL COUNTERS (Public)
+GET http://localhost:3000/api/v1/queues/current
+
+### 🎫 CLAIM QUEUE AUTOMATICALLY (Public)
+# Automatically assigns to counter with smallest queue
+POST http://localhost:3000/api/v1/queues/claim
+
+### 🎫 CLAIM MULTIPLE QUEUES FOR TESTING
+POST http://localhost:3000/api/v1/queues/claim
+
+###
+POST http://localhost:3000/api/v1/queues/claim
+
+###
+POST http://localhost:3000/api/v1/queues/claim
+
+### 🔓 RELEASE QUEUE (Public) - Cancel claimed queue
+PATCH http://localhost:3000/api/v1/queues/release/1
+
+### 📢 CALL NEXT QUEUE (🔒 AUTH REQUIRED)
+# Call next customer for specific counter
+POST http://localhost:3000/api/v1/queues/next/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### ⏭️ SKIP CURRENT QUEUE (🔒 AUTH REQUIRED)
+# Skip current called queue and call next automatically
+POST http://localhost:3000/api/v1/queues/skip/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 🔄 RESET SPECIFIC COUNTER QUEUE (🔒 AUTH REQUIRED)
+POST http://localhost:3000/api/v1/queues/reset
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+{
+  "counter_id": 1
+}
+
+### 🔄 RESET ALL QUEUES (🔒 AUTH REQUIRED)
+POST http://localhost:3000/api/v1/queues/reset
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+{}
+
+### =========================
+### 🎪 QUEUE CRUD OPERATIONS
+### =========================
+
+### � GET ALL QUEUES (Public)
+GET http://localhost:3000/api/v1/queues
+
+### 👁️ GET QUEUE BY ID (Public)
+GET http://localhost:3000/api/v1/queues/1
+
+### ➕ CREATE QUEUE MANUALLY (🔒 AUTH REQUIRED)
+POST http://localhost:3000/api/v1/queues
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+{
+  "number": 100,
+  "counterId": 1,
   "status": "claimed"
 }
 
-### 👁️ STEP 8: GET ALL QUEUES
-GET http://localhost:3000/api/v1/queues
-
-### 👁️ STEP 9: GET SINGLE QUEUE (ganti ID sesuai hasil step 7)
-GET http://localhost:3000/api/v1/queues/1
-
-### ⚙️ STEP 10: UPDATE QUEUE
+### ✏️ UPDATE QUEUE (🔒 AUTH REQUIRED)
 PUT http://localhost:3000/api/v1/queues/1
 Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
 
 {
-  "number": 1,
+  "number": 101,
   "status": "called",
-  "counterId": 3
+  "counterId": 1
 }
 
-### 🔄 STEP 11: UPDATE QUEUE STATUS
+### 🔄 UPDATE QUEUE STATUS ONLY (🔒 AUTH REQUIRED)
 PATCH http://localhost:3000/api/v1/queues/1/status
 Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
 
 {
   "status": "served"
 }
 
-### 🗑️ STEP 12: DELETE QUEUE
+### 🗑️ DELETE QUEUE (🔒 AUTH REQUIRED)
 DELETE http://localhost:3000/api/v1/queues/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
 
-### 🗑️ STEP 13: DELETE COUNTER (terakhir)
-DELETE http://localhost:3000/api/v1/counters/3
+### =========================
+### 🧪 COMPLETE TESTING FLOW
+### =========================
 
-### 🔍 STEP 14: VERIFY - GET ALL (pastikan data sudah terhapus)
-GET http://localhost:3000/api/v1/counters
+### FLOW 1: SETUP SYSTEM
+# 1. Login to get token
+# 2. Reset system data
+# 3. Create multiple counters
+# 4. Check system status
 
-###
-GET http://localhost:3000/api/v1/queues
+### FLOW 2: CUSTOMER FLOW (No Auth Required)
+# 1. Check current status
+# 2. Claim queue
+# 3. Check current status again
+# 4. Release queue (if needed)
+
+### FLOW 3: STAFF OPERATIONS (Auth Required)
+# 1. Call next queue
+# 2. Skip queue (if customer doesn't respond)
+# 3. Reset counter queues (end of day)
+
+### FLOW 4: ADMIN OPERATIONS (Auth Required)
+# 1. Manage counters (create, update, delete)
+# 2. Manage staff accounts
+# 3. Monitor system
+
+### =========================
+### 📚 API DOCUMENTATION
+### =========================
+
+# 🔓 PUBLIC ENDPOINTS (No Authentication Required):
+# GET    /counters          - List all counters
+# GET    /counters/:id      - Get counter details
+# GET    /queues           - List all queues
+# GET    /queues/:id       - Get queue details
+# GET    /queues/current   - Current status of all counters
+# POST   /queues/claim     - Auto claim queue
+# PATCH  /queues/release/:id - Release claimed queue
+# POST   /auth/login       - Login
+# POST   /auth/create      - Create first admin
+
+# � PROTECTED ENDPOINTS (Authentication Required):
+# Counter Management:
+# POST   /counters         - Create counter
+# PUT    /counters/:id     - Update counter
+# PATCH  /counters/:id/status - Update counter status
+# DELETE /counters/:id     - Delete counter
+
+# Queue Management:
+# POST   /queues           - Create queue manually
+# PUT    /queues/:id       - Update queue
+# PATCH  /queues/:id/status - Update queue status
+# DELETE /queues/:id       - Delete queue
+# POST   /queues/next/:counter_id - Call next queue
+# POST   /queues/skip/:counter_id - Skip current queue
+# POST   /queues/reset     - Reset queues
+
+# Admin Management:
+# GET    /admin            - List all admins
+# POST   /admin/create     - Create admin
+# PUT    /admin/:id        - Update admin
+# DELETE /admin/:id        - Delete admin
+
+# System Management:
+# GET    /system/status    - System status
+# POST   /system/reset     - Reset all data
+
+### =========================
+### � NOTES & IMPORTANT INFO
+### =========================
+
+# 1. 🔑 AUTHENTICATION:
+#    - Login first to get JWT token
+#    - Copy token to Authorization header for protected endpoints
+#    - Token format: "Bearer YOUR_JWT_TOKEN_HERE"
+
+# 2. 🎯 QUEUE FLOW:
+#    - claimed → called → served/skipped
+#    - released (customer cancels)
+#    - reset (admin reset)
+
+# 3. 🏪 COUNTER STATUS:
+#    - active: accepting queues
+#    - inactive: not accepting new queues
+#    - disable: soft deleted
+
+# 4. 🔄 AUTO FEATURES:
+#    - /claim automatically selects counter with smallest queue
+#    - /skip automatically calls next queue after skipping
+#    - System validates max queue capacity
+
+# 5. ⚡ TESTING TIPS:
+#    - Use system/reset to clean data
+#    - Create multiple counters for better testing
+#    - Check /current endpoint to monitor status
+#    - Test authentication by trying protected endpoints without token
+
+### =================================================================
+### 🎉 HAPPY TESTING! 🎉
+### =================================================================
 
