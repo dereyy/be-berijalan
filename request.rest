@@ -1,45 +1,29 @@
 ### =========================
-### get
-GET http://localhost:3000/api/v1/admin
-
-
+### 🔐 AUTHENTICATION TEST
 ### =========================
-### AUTH - LOGIN
-POST http://localhost:3000/api/v1/auth/login
-Content-Type: application/json
 
-{
-  "username": "adminbaru1",
-  "password": "password123"
-}
-
-### =========================
-### ADMIN - CREATE ADMIN
+### STEP 1: CREATE ADMIN (jika belum ada)
 POST http://localhost:3000/api/v1/auth/create
 Content-Type: application/json
 
 {
-  "username": "adminbaru1",
-  "password": "password123",
-  "email": "adminbaru1@email.com",
-  "name": "Admin Baru"
+  "username": "testadmin",
+  "password": "password123", 
+  "email": "testadmin@email.com",
+  "name": "Test Admin"
 }
 
-### =========================
-### ADMIN - UPDATE ADMIN
-PUT http://localhost:3000/api/v1/auth/2
+### STEP 2: LOGIN TO GET TOKEN ⭐
+POST http://localhost:3000/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "username": "adminupdate1",
-  "email": "adminupdate1@email.com",
-  "name": "Admin Update1"
+  "username": "testadmin",
+  "password": "password123"
 }
 
 ### =========================
-### ADMIN - DELETE ADMIN
-DELETE http://localhost:3000/api/v1/auth/2
-
+### TESTING ENDPOINTS (dengan & tanpa auth)
 ### =========================
 ### COUNTER APIs
 ### =========================
@@ -117,6 +101,16 @@ Content-Type: application/json
 {
   "name": "Counter Fresh",
   "maxQueue": 50
+}
+
+### 🔐 TEST: CREATE COUNTER DENGAN AUTH (copy token dari login)
+POST http://localhost:3000/api/v1/counters
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+{
+  "name": "Counter With Auth",
+  "maxQueue": 75
 }
 
 ### 👁️ STEP 3: GET ALL COUNTERS (lihat ID counter yang baru dibuat)
