@@ -1,5 +1,5 @@
 ### =================================================================
-### 🏢 BERIJALAN FULLSTACK - QUEUE MANAGEMENT SYSTEM API
+### 🏢 BERIJALAN FULLSTACK - ANTRIAN RUMAH SAKIT
 ### =================================================================
 ### � Date: September 20, 2025
 ### 🌐 Base URL: http://localhost:3000/api/v1
@@ -306,7 +306,8 @@ Authorization: Bearer YOUR_JWT_TOKEN_HERE
 # DELETE /counters/:id     - Delete counter
 
 # Queue Management:
-# POST   /queues           - Create queue manually
+# POST   /queues           - Create 
+queue manually
 # PUT    /queues/:id       - Update queue
 # PATCH  /queues/:id/status - Update queue status
 # DELETE /queues/:id       - Delete queue
