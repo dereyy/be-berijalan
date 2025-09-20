@@ -142,3 +142,26 @@ export const SDeleteAdmin = async (id: number): Promise<IGlobalResponse> => {
     message: "Admin deleted successfully",
   };
 };
+
+export const SGetAdminById = async (): Promise<IGlobalResponse> => {
+  const admins = await prisma.admin.findMany({
+    where: { deletedAt: null },
+    select: {
+      id: true,
+      username: true,
+      email: true,
+      name: true,
+      isActive: true,
+      createdAt: true,
+      updatedAt: true
+    },
+    orderBy: {createdAt: 'desc',
+    },
+  });
+
+  return {
+    status: true,
+    message: "Admins retrieved successfully",
+    data: admins,
+  };
+} 

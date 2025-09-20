@@ -1,23 +1,194 @@
-### Create Admin
+### =========================
+### get
+GET http://localhost:3000/api/v1/admin
+
+
+### =========================
+### AUTH - LOGIN
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "adminbaru1",
+  "password": "password123"
+}
+
+### =========================
+### ADMIN - CREATE ADMIN
 POST http://localhost:3000/api/v1/auth/create
 Content-Type: application/json
 
 {
-  "username": "adminbaru",
+  "username": "adminbaru1",
   "password": "password123",
-  "email": "adminbaru@email.com",
+  "email": "adminbaru1@email.com",
   "name": "Admin Baru"
 }
 
-### Update Admin
-PUT http://localhost:3000/api/v1/auth/1
+### =========================
+### ADMIN - UPDATE ADMIN
+PUT http://localhost:3000/api/v1/auth/2
 Content-Type: application/json
 
 {
-  "username": "adminupdate",
-  "email": "adminupdate@email.com",
-  "name": "Admin Update"
+  "username": "adminupdate1",
+  "email": "adminupdate1@email.com",
+  "name": "Admin Update1"
 }
 
-### Delete Admin
-DELETE http://localhost:3000/api/v1/auth/1
+### =========================
+### ADMIN - DELETE ADMIN
+DELETE http://localhost:3000/api/v1/auth/2
+
+### =========================
+### COUNTER APIs
+### =========================
+
+### COUNTER - GET ALL COUNTERS
+GET http://localhost:3000/api/v1/counters
+
+### COUNTER - GET SINGLE COUNTER
+GET http://localhost:3000/api/v1/counters/1
+
+### COUNTER - CREATE COUNTER
+POST http://localhost:3000/api/v1/counters
+Content-Type: application/json
+
+{
+  "name": "Counter A",
+  "maxQueue": 50
+}
+
+### COUNTER - UPDATE COUNTER
+PUT http://localhost:3000/api/v1/counters/1
+Content-Type: application/json
+
+{
+  "name": "Counter A Updated",
+  "maxQueue": 75,
+  "currentQueue": 5
+}
+
+### COUNTER - UPDATE COUNTER STATUS (ACTIVE)
+PATCH http://localhost:3000/api/v1/counters/1/status
+Content-Type: application/json
+
+{
+  "status": "active"
+}
+
+### COUNTER - UPDATE COUNTER STATUS (INACTIVE)
+PATCH http://localhost:3000/api/v1/counters/1/status
+Content-Type: application/json
+
+{
+  "status": "inactive"
+}
+
+### COUNTER - UPDATE COUNTER STATUS (DISABLE)
+PATCH http://localhost:3000/api/v1/counters/1/status
+Content-Type: application/json
+
+{
+  "status": "disable"
+}
+
+### =========================
+### SYSTEM ENDPOINTS (untuk testing)
+### =========================
+
+### 🔄 RESET ALL DATA (jalankan ini dulu untuk clean start)
+POST http://localhost:3000/api/v1/system/reset
+
+### 📊 GET SYSTEM STATUS
+GET http://localhost:3000/api/v1/system/status
+
+### =========================
+### COMPLETE TESTING FLOW
+### =========================
+
+### 🔄 STEP 1: RESET - GET ALL COUNTERS (cek data yang ada)
+GET http://localhost:3000/api/v1/counters
+
+### 🆕 STEP 2: CREATE COUNTER BARU
+POST http://localhost:3000/api/v1/counters
+Content-Type: application/json
+
+{
+  "name": "Counter Fresh",
+  "maxQueue": 50
+}
+
+### 👁️ STEP 3: GET ALL COUNTERS (lihat ID counter yang baru dibuat)
+GET http://localhost:3000/api/v1/counters
+
+### 👁️ STEP 4: GET SINGLE COUNTER (ganti ID sesuai hasil step 2)
+GET http://localhost:3000/api/v1/counters/3
+
+### ⚙️ STEP 5: UPDATE COUNTER
+PUT http://localhost:3000/api/v1/counters/3
+Content-Type: application/json
+
+{
+  "name": "Counter Updated",
+  "maxQueue": 75
+}
+
+### 🔄 STEP 6: UPDATE COUNTER STATUS - ACTIVE
+PATCH http://localhost:3000/api/v1/counters/3/status
+Content-Type: application/json
+
+{
+  "status": "active"
+}
+
+### =========================
+### QUEUE TESTING (gunakan counter ID dari step 2)
+### =========================
+
+### 🆕 STEP 7: CREATE QUEUE
+POST http://localhost:3000/api/v1/queues
+Content-Type: application/json
+
+{
+  "number": 1,
+  "counterId": 3,
+  "status": "claimed"
+}
+
+### 👁️ STEP 8: GET ALL QUEUES
+GET http://localhost:3000/api/v1/queues
+
+### 👁️ STEP 9: GET SINGLE QUEUE (ganti ID sesuai hasil step 7)
+GET http://localhost:3000/api/v1/queues/1
+
+### ⚙️ STEP 10: UPDATE QUEUE
+PUT http://localhost:3000/api/v1/queues/1
+Content-Type: application/json
+
+{
+  "number": 1,
+  "status": "called",
+  "counterId": 3
+}
+
+### 🔄 STEP 11: UPDATE QUEUE STATUS
+PATCH http://localhost:3000/api/v1/queues/1/status
+Content-Type: application/json
+
+{
+  "status": "served"
+}
+
+### 🗑️ STEP 12: DELETE QUEUE
+DELETE http://localhost:3000/api/v1/queues/1
+
+### 🗑️ STEP 13: DELETE COUNTER (terakhir)
+DELETE http://localhost:3000/api/v1/counters/3
+
+### 🔍 STEP 14: VERIFY - GET ALL (pastikan data sudah terhapus)
+GET http://localhost:3000/api/v1/counters
+
+###
+GET http://localhost:3000/api/v1/queues
+

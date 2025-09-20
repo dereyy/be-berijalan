@@ -1,5 +1,16 @@
 import type { Request, Response, NextFunction } from "express";
 import { SCreateAdmin, SUpdateAdmin, SDeleteAdmin } from "../services/admin.service";
+import { SGetAdminById } from "../services/admin.service";
+
+export const CGetAllAdmin = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const result = await SGetAdminById();
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 export const CCreateAdmin = async (
   req: Request,
