@@ -29,13 +29,19 @@ export const MErrorHandler = (err: any, req: Request, res: Response, next: NextF
 
     // Tentukan status code berdasarkan jenis error
     let statusCode = 400;
-    if (err.message.includes("not found")) {
+    const msg = err.message ? String(err.message).toLowerCase() : '';
+    if (msg.includes("not found")) {
       statusCode = 404;
-    } else if (err.message.includes("already exists") || err.message.includes("duplicate")) {
+    } else if (msg.includes("already exists") || msg.includes("duplicate")) {
       statusCode = 409;
-    } else if (err.message.includes("Invalid credentials") || err.message.includes("unauthorized")) {
+    } else if (
+      msg.includes("invalid credentials") ||
+      msg.includes("unauthor") ||
+      msg.includes("invalid token") ||
+      msg.includes("token expired")
+    ) {
       statusCode = 401;
-    } else if (err.message.includes("forbidden")) {
+    } else if (msg.includes("forbidden")) {
       statusCode = 403;
     }
 

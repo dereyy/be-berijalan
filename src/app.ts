@@ -12,6 +12,33 @@ import {connectRedis} from "./config/redis.config"
 const app = express();
 connectRedis().catch(console.error);
 
+// Bootstrap: create initial admin if none exists (development helper)
+import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
+
+const prisma = new PrismaClient();
+const bootstrapInitialAdmin = async () => {
+  try {
+    const count = await prisma.admin.count({ where: { deletedAt: null } });
+    if (count === 0) {
+      const username = process.env.INIT_ADMIN_USERNAME || "admin";
+      const password = process.env.INIT_ADMIN_PASSWORD || "admin123";
+      const email = process.env.INIT_ADMIN_EMAIL || "admin@berijalan.com";
+      const name = process.env.INIT_ADMIN_NAME || "System Administrator";
+
+      const hashed = await bcrypt.hash(password, 10);
+      await prisma.admin.create({
+        data: { username, password: hashed, email, name },
+      });
+      console.log("Initial admin created:", username);
+    }
+  } catch (err) {
+    console.error("Failed to bootstrap admin:", err);
+  }
+};
+
+bootstrapInitialAdmin();
+
 // Middleware
 // Allow credentials so cookies (auth token) can be sent from frontend
 app.use(
@@ -25,7 +52,6 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/auth", adminRouter);
 app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/counters", counterRouter);
 app.use("/api/v1/queues", queueRouter);

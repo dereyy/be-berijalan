@@ -28,10 +28,15 @@ export const UGenerateToken = (admin: Partial<Admin>): string => {
   const key = `token:${admin.id}:${token.split(".")[2]}`;
 
   // Menyimpan token di Redis dengan masa berlaku (EX = seconds)
-  redisClient.set(key, token, {
-    // Mengonversi string waktu (misal: "1d") menjadi detik
-    EX: ms(JWT_EXPIRES_IN) / 1000,
-  });
+  const exSeconds = ms(JWT_EXPIRES_IN) / 1000;
+  try {
+    console.log("UGenerateToken: storing token key", key, "expiresIn(s)=", exSeconds);
+    redisClient.set(key, token, {
+      EX: exSeconds,
+    });
+  } catch (err) {
+    console.error("UGenerateToken: failed to store token in redis", err);
+  }
 
   return token;
 };
@@ -44,7 +49,14 @@ export const UGenerateToken = (admin: Partial<Admin>): string => {
  */
 export const UVerifyToken = async (token: string) => {
   // Memverifikasi token menggunakan secret key
-  const payload = jwt.verify(token, JWT_SECRET);
+  let payload: any;
+  try {
+    payload = jwt.verify(token, JWT_SECRET);
+  } catch (err) {
+    const e: any = err;
+    console.error("UVerifyToken: jwt.verify failed:", e?.message || e);
+    throw new Error("Invalid token");
+  }
 
   // Jika payload tidak valid setelah verifikasi (seharusnya jwt.verify sudah throw error)
   if (!payload) {
@@ -62,6 +74,7 @@ export const UVerifyToken = async (token: string) => {
 
   // Jika tidak ada di Redis, berarti token sudah di-invalidate (misal: logout) atau expired
   if (!data) {
+    console.error("UVerifyToken: token not found in redis for key", key);
     throw new Error("Token expired or invalidated");
   }
 
