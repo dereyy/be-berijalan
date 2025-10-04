@@ -13,7 +13,13 @@ const app = express();
 connectRedis().catch(console.error);
 
 // Middleware
-app.use(cors());
+// Allow credentials so cookies (auth token) can be sent from frontend
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -28,8 +34,10 @@ app.use("/api/v1/system", systemRouter);
 // Error handler harus ditempatkan sebelum app.listen
 app.use(MErrorHandler);
 
-// Server
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log("Server is running on http://localhost:3000");
+// Server (read from env when available)
+const PORT = +(process.env.PORT || 3000);
+const HOST = process.env.HOST || "0.0.0.0";
+app.listen(PORT, HOST, () => {
+  console.log(`Server is running on http://${HOST}:${PORT}`);
+  console.log(`PID: ${process.pid}`);
 });
